@@ -2,6 +2,8 @@
 insert into uf(nome) values ('AC'),('AL'),('AP'),('AM'),('BA'),('CE'),('DF'),('ES'),('GO'),('MA'),('MT'),
 ('MS'),('MG'),('PA'),('PB'),('PR'),('PE'),('PI'),('RJ'),('RN'),('RS'),('RO'),('RR'),('SC'),('SP'),('SE'),('TO')
 
+
+
 --Exercício 2
 insert into cidade (nome, uf_id) select 'Chapecó', id from uf where nome = 'SC';
 insert into cidade (nome, uf_id) select 'Blumenau', id from uf where nome = 'SC';
@@ -17,6 +19,8 @@ insert into cidade (nome, uf_id) select 'Ponta Grossa', id from uf where nome = 
 insert into cidade (nome, uf_id) select 'Jandaia do Sul', id from uf where nome = 'PR';
 insert into cidade (nome, uf_id) select 'Ribeirão Preto', id from uf where nome = 'SP';
 
+
+
 --Exercicio 3
 begin;
 delete from uf where id in(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,26,27)
@@ -26,6 +30,123 @@ delete from uf where id in (select uf.id from uf left join cidade c on c.uf_id =
 commit;
 
 
+
+
 --Exercicio 4
+insert into cidade (nome, uf_id) select 'Sorocaba', id from uf where nome = 'SP';
+insert into cidade (nome, uf_id) select 'Campinas', id from uf where nome = 'SP';
+insert into cidade (nome, uf_id) select 'Santos', id from uf where nome = 'SP';
+insert into cidade (nome, uf_id) select 'Bauru', id from uf where nome = 'SP';
+insert into cidade (nome, uf_id) select 'Piracicaba', id from uf where nome = 'SP';
+
+
+
+--Exercicio 5
+update cidade set nome = 'Lunardelli' where nome like 'Lunar%'
+update cidade set nome = 'Jandaia' where nome like 'Jandai%'
+update cidade set nome = 'Cidade Canção' where nome like 'Mari%'
+
+
+
+--Exercicio 6
+select cidade.nome, uf.nome from cidade
+inner join uf on uf.id = cidade.uf_id
+order by uf.nome, cidade.nome
+
+
+
+--Exercicio 7
+select uf.nome, count(cidade.id) 
+from cidade
+inner join uf on uf.id = cidade.uf_id
+group by uf.nome
+
+
+
+--Exercicio 8 e 9
+insert into pessoa (nome, documento) 
+values ('Eric', '123658'), ('Rafael','35468'), ('Julia','65354')
+
+insert into endereco (pessoa_id, cidade_id, tipoLogradouro, logradouro, numero, cep, tipo)
+select 
+	(select id from pessoa where nome = 'Eric'),
+	cidade.id, 'Av', 'Sao Paulo', 23,78850000,2
+from cidade 
+inner join uf on uf.id = cidade.uf_id
+where uf.nome = 'PR' and cidade.nome = 'Arapongas'
+
+insert into endereco (pessoa_id, cidade_id, tipoLogradouro, logradouro, numero, cep, tipo)
+select
+	(select id from pessoa where nome = 'Rafael'),
+	cidade.id, 'Rua', 'Piracicaba', 154, 54652500, 1
+from cidade 
+inner join uf on uf.id = cidade.uf_id
+where uf.nome = 'PR' and cidade.nome = 'Arapongas'
+
+insert into endereco (pessoa_id, cidade_id, tipoLogradouro, logradouro, numero, cep, tipo)
+select
+	(select id from pessoa where nome = 'Julia'),
+	cidade.id, 'Av', 'Julio Cesa', 6652, 22253200, 1
+from cidade
+inner join uf on uf.id = cidade.uf_id
+where uf.nome = 'PR' and cidade.nome = 'Apucarana'
+
+
+
+
+--Exercicio 10
+insert into pessoa (nome, documento)
+values ('Karoline','2452'), ('Bruna', '24256')
+
+insert into endereco (pessoa_id, cidade_id, tipoLogradouro, logradouro, numero, cep, tipo)
+select
+	(select id from pessoa where nome = 'Bruna'),
+	cidade.id, 'Av', 'Brasil', 5354, 87050000,2
+from cidade
+inner join uf on uf.id = cidade.uf_id
+where uf.nome = 'SC' and cidade.nome = 'Blumenau'
+
+
+
+
+--Exercicio 11
+select pessoa.nome, endereco.logradouro, cidade.nome, uf.nome
+from pessoa
+inner join endereco on pessoa.id = endereco.pessoa_id
+inner join cidade on endereco.cidade_id = cidade.id
+inner join uf on cidade.uf_id = uf.id
+order by pessoa.nome, uf.nome, cidade.nome
+
+
+
+--Exercicio 12
+delete from endereco where id in (
+select endereco.id from pessoa 
+inner join endereco on endereco.pessoa_id = pessoa.id
+inner join cidade on cidade.id = endereco.cidade_id
+where cidade.nome = 'Arapongas')
+
+
+
+
+--Exercicio 13
+update endereco set cep = '00000000' 
+
+
+
+--Exercicio 14
+alter table recibo
+rename prestador_fk to cliente_fk
+
+
+
+
+
+
+
+
+
+
+
 
 
